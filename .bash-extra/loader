@@ -6,7 +6,6 @@ source ~/.bash-extra/git-prompt.sh
 source ~/.bash-extra/jump-to-code.sh
 source ~/.bash-extra/jvm-switch.sh
 source ~/.bash-extra/search-code.sh
-source ~/.bash-extra/.tldr-completion.bash
 
 export PATH=~/.bash-extra/git-alias-functions:$PATH
 export PATH=~/.bash-extra/jetbrains-shell:$PATH

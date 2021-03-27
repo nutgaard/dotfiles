@@ -1,5 +1,4 @@
 # Shortcut for editing aliases
-alias config="nano --syntax=sh ~/.bash_aliases"
 alias update="source ~/.bashrc"
 alias nanosh="nano --syntax=sh $@"
 
