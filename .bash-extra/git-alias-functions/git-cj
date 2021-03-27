@@ -1,0 +1,13 @@
+#!/bin/bash
+read -p 'Jira issue: ' ISSUE
+read -p 'Message: ' MSG
+read -p 'Add description: [Yn]' EXTRA
+EXTRA=${EXTRA:-Y}
+HEADER="[$ISSUE] $MSG"
+
+if [[ "$EXTRA" == "Y" ]]; then
+  git commit -m "$HEADER" -e
+else
+  git commit -m "$HEADER"
+fi
+

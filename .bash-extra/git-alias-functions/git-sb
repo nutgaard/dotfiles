@@ -1,0 +1,22 @@
+#!/bin/bash
+BRANCHES=$(git branch -a | cut -c 3- | grep -v "\->")
+NO_REMOTES=$(echo "$BRANCHES" | grep -v "^remotes")
+if [ -z "$@" ]
+then
+  BRANCH=$(echo "$BRANCHES" | fzf -1)
+else
+  NO_REMOTES_MATCHES=$(echo "$NO_REMOTES" | fzf -f $@)
+  NO_REMOTES_COUNT=$(echo "$NO_REMOTES_MATCHES" | wc -l)
+  if [[ "$NO_REMOTES_COUNT" == "1" ]] && [ ! -z "$NO_REMOTES_MATCHES" ];
+  then
+    BRANCH=$(echo "$NO_REMOTES_MATCHES")
+  else
+    BRANCH=$(echo "$BRANCHES" | fzf -1 -q $@)
+  fi
+fi
+if [[ $BRANCH == "remotes/origin/"* ]]
+then
+  BRANCH=$(echo "$BRANCH" | sed -e "s/^remotes\/origin\///")
+fi
+
+git checkout $BRANCH

@@ -1,0 +1,16 @@
+. ~/.bash-extra/git-completion.bash
+. ~/.bash-extra/gh-completion.bash
+
+source ~/.bash-extra/npm-complete.sh
+source ~/.bash-extra/git-prompt.sh
+source ~/.bash-extra/jump-to-code.sh
+source ~/.bash-extra/jvm-switch.sh
+source ~/.bash-extra/search-code.sh
+source ~/.bash-extra/.tldr-completion.bash
+
+export PATH=~/.bash-extra/git-alias-functions:$PATH
+export PATH=~/.bash-extra/jetbrains-shell:$PATH
+export GIT_PS1_SHOWDIRTYSTATE="auto"
+export PS1="\u \[\e[32m\]\w\[\e[91m\]\$(__git_ps1)\[\e[00m\] $ "
+
+export CHROMIUM_USER_FLAGS=" --force-device-scale-factor=0.5 "

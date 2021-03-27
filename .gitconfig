@@ -1,0 +1,13 @@
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	glg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 20 --
+	co = checkout
+	pushit = "!git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+	alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+[user]
+	email = nutgaard@gmail.com
+	name = Nicklas Utgaard
+[core]
+	autocrlf = input
+[pull]
+	ff = only

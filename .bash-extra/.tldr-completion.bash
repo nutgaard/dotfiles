@@ -1,0 +1,1 @@
+/home/nicklas/.nvm/versions/node/v14.15.5/lib/node_modules/tldr/bin/completion/bash/tldr

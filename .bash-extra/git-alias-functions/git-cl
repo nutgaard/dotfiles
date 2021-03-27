@@ -1,0 +1,24 @@
+#!/bin/bash
+
+read -p "Prune origin? [Yn] " PRUNE
+PRUNE=${PRUNE:-Y}
+if [[ "$PRUNE" == "Y" ]]; then
+  git remote prune origin
+fi
+
+BRANCHES=$(git branch --merged | egrep -v "(^\*|master|main|dev)")
+if [[ -z $BRANCHES ]]; then
+  echo "Nothing to delete here. Good job."
+  exit 0
+fi
+echo "Will delete the following:"
+for BRANCH in $BRANCHES; do
+  echo "* $BRANCH"
+done
+echo
+read -p "Ok? [Yn] " OK
+OK=${OK:-Y}
+if [[ "$OK" == "Y" ]]; then
+  git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d
+  echo "All gone... Happy hunting."
+fi

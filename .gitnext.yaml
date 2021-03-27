@@ -1,0 +1,19 @@
+sources:
+  # Can be your own github username, someone elses or `__self__` which will be resolved using the official `gh` cli
+  - username: '__self__'
+    ignore:
+      - repo: esiqveland/raskruteoversikt
+      - repo: erlendev/nav-frontend-moduler
+      - repo: bekk/react-native-workshop
+      - username: dependabot
+  - organization: navikt
+    # Due to how large organizations can be, we have to explicit about which teams and repos we are interested in
+    include:
+      - team: personoversikt
+      - repo: dev-proxy
+      - repo: frontendlogger
+      - repo: pinpoint
+      - repo: pus-decorator
+      - repo: pus-nais-java-app
+      - repo: pus-nginx
+      - repo: react-intl-bundler
