@@ -20,7 +20,10 @@ alias mci="mvn clean install"
 alias clipboard="xclip -sel clip"
 alias catc="pygmentize -g"
 alias ccat="pygmentize -g"
-alias rebootWindows="sudo grub-reboot 'Windows Boot Manager (on /dev/nvme1n1p2)' && sudo reboot"
+function rebootWindows() {
+  sudo grub-reboot 'Windows Boot Manager (on /dev/nvme1n1p2)'
+  echo "Run 'sudo reboot' to reboot from terminal." 
+}
 
 # .dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'

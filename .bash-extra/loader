@@ -1,5 +1,5 @@
 . ~/.bash-extra/git-completion.bash
-. ~/.bash-extra/gh-completion.bash
+eval "$(gh completion -s bash)"
 
 source ~/.bash-extra/npm-complete.sh
 source ~/.bash-extra/git-prompt.sh
