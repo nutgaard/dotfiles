@@ -3,7 +3,10 @@
 $.verbose = false;
 process.stdin.isTTY = false;
 
-const currentBranch = (await $`git branch --show-current`).stdout.trim();
+const [runtime, runner, script, ...args] = process.argv;
+const [branch] = args;
+
+const currentBranch = branch ?? (await $`git branch --show-current`).stdout.trim();
 console.log(chalk.cyan(`Got current branch: ${currentBranch}`));
 if (currentBranch === 'dev') {
     console.log(chalk.red(`Cannot promote PR from dev-branch...`));
@@ -28,6 +31,8 @@ if (prFromCurrentToDev.length === 0) {
 }
 
 const candicatePr = prFromCurrentToDev[0];
+console.log(chalk.cyan(`Chose: #${candicatePr.number} ${candicatePr.title}`));
+
 if (candicatePr.mergeable !== 'MERGEABLE') {
     console.log(chalk.red(`PR has status '${candicatePr.mergeable}', and cannot be merged without manual intervention...`));
     process.exit(1);
@@ -41,14 +46,27 @@ if (!shouldContinue) {
 }
 
 console.log(chalk.cyan(`Merging #${candicatePr.number} from ${candicatePr.headRefName} into ${candicatePr.baseRefName}`));
-const mergeResult = await nothrow($`gh pr merge ${candicatePr.number} --merge --delete-branch`);
+let mergeResult = await nothrow($`gh pr merge ${candicatePr.number} --merge --delete-branch`);
 if (mergeResult.exitCode !== 0) {
     console.log(chalk.red(mergeResult.stderr));
-    process.exit(mergeResult.exitCode);
+    if (mergeResult.exitCode === 1 && mergeResult.stderr.includes("use administrator privileges")) {
+        const useAdmin = ((await question('Use administrator privileges? [yN] ')) == 'y')
+        if (useAdmin) {
+            mergeResult = await nothrow($`gh pr merge ${candicatePr.number} --merge --delete-branch --admin`);
+        } else {
+            process.exit(mergeResult.exitCode);
+        }
+    } else {
+        process.exit(mergeResult.exitCode);
+    }
 }
 console.log(chalk.green(`Merged #${candicatePr.number} from ${candicatePr.headRefName} into ${candicatePr.baseRefName}`));
 
-console.log(chalk.cyan(`Creating new PR from 'dev' into 'body'`));
+console.log(chalk.cyan(`Fetching new merged branch (dev)`));
+await $`git pull`;
+console.log(chalk.cyan(`Fetched new merged branch (dev)`));
+
+console.log(chalk.cyan(`Creating new PR from 'dev' into 'master'`));
 const tmpFileName = 'xxxx-xxxx-xxxx-xxxx'.replace(/x/g, () => Math.round(36 * Math.random()).toString(36));
 const tmpFile = `${tmpFileName}.txt`;
 await fs.writeFile(tmpFile, candicatePr.body);
@@ -59,7 +77,7 @@ if (newPrResult.exitCode !== 0) {
     console.log(chalk.red(newPrResult.stderr));
     process.exit(newPrResult.exitCode);
 }
-console.log(chalk.green(`Created new PR from 'dev' into 'body'`));
+console.log(chalk.green(`Created new PR from 'dev' into 'master'`));
 
 console.log(chalk.cyan(`Opening new PR`));
 const newPr = newPrResult.stdout.trim();

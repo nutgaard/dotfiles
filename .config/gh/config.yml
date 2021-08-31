@@ -9,5 +9,5 @@ pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
     co: pr checkout
-    promote-pr: '!zx ~/.bash-extra/gh-promote-pr.mjs'
+    promote-pr: '!zx ~/.bash-extra/gh-promote-pr.mjs $*'
     create-prod-pr: '!zx ~/.bash-extra/create-prod-pr.mjs'
