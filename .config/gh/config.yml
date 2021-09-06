@@ -10,4 +10,6 @@ pager:
 aliases:
     co: pr checkout
     promote-pr: '!zx ~/.bash-extra/gh-promote-pr.mjs $*'
-    create-prod-pr: '!zx ~/.bash-extra/create-prod-pr.mjs'
+    create-prod-pr: '!zx ~/.bash-extra/gh-create-prod-pr.mjs'
+    ok: '!zx ~/.bash-extra/gh-is-ok.mjs'
+    browse-run: '!zx ~/.bash-extra/gh-open-run.mjs'
