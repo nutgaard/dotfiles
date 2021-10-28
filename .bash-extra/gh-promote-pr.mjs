@@ -6,6 +6,12 @@ process.stdin.isTTY = false;
 const [runtime, runner, script, ...args] = process.argv;
 const [branch] = args;
 
+const localChanges = (await $`git status --porcelain`).stdout;
+if (localChanges.length > 0) {
+    console.log(chalk.red(`Cannot promote PR while you got local changes. Commit and push your changes, or stash them somewhere safe.`));
+    process.exit(1);
+}
+
 const currentBranch = branch ?? (await $`git branch --show-current`).stdout.trim();
 console.log(chalk.cyan(`Got current branch: ${currentBranch}`));
 if (currentBranch === 'dev') {
