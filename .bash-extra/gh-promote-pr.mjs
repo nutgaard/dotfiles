@@ -4,7 +4,14 @@ $.verbose = false;
 process.stdin.isTTY = false;
 
 const [runtime, runner, script, ...args] = process.argv;
-const [branch] = args;
+const [branch, ...flags] = args;
+const { openWeb } = parseFlags(flags);
+
+function parseFlags(flags) {
+    return {
+        openWeb: flags.includes('-w') || flags.includes('--web')
+    }
+}
 
 const localChanges = (await $`git status --porcelain`).stdout;
 if (localChanges.length > 0) {
@@ -85,6 +92,10 @@ if (newPrResult.exitCode !== 0) {
 }
 console.log(chalk.green(`Created new PR from 'dev' into 'master'`));
 
-console.log(chalk.cyan(`Opening new PR`));
 const newPr = newPrResult.stdout.trim();
-await $`gh pr view ${newPr} -w`;
+if (openWeb) {
+    console.log(chalk.cyan(`Opening new PR (${newPr}) in browser`));
+    await $`gh pr view ${newPr} -w`;
+} else {
+    console.log(chalk.cyan(`Showing new PR by running command: gh pr view ${newPr}`));
+}
